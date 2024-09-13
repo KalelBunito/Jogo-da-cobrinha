@@ -1,0 +1,53 @@
+import pygame, random, time
+from pygame.locals import *
+
+# inicialização da biblioteca
+pygame.init()
+
+# interface
+screen = pygame.display.set_mode((600,600))
+pygame.display.set_caption('Jogo da Cobrinha')
+
+# direções da cobra
+esquerda = K_LEFT  
+direita = K_RIGHT
+cima = K_UP
+baixo = K_DOWN
+
+# variavel de quando a cobrinha vai se mopvimentar
+passo = 10
+
+# criação das variáveis
+snake = [(200, 200), (200, 210)]
+snake_skin = pygame.Surface((10,10))
+snake_skin.fill((255,255,255))
+snake_dir = cima
+
+# atribuir a velocidade "frames"
+# direito (horizontal): 0 à 600px: esquerdo(negativos), direito(positivos);
+# (vertical): 0 à 600px: topo (negativos), inferior (positivos);
+clock = pygame.time.Clock()
+
+while True:
+    screen.fill((0, 0, 0))
+    clock.tick(10)
+
+    # verificar as posiçoes do corpo da cobra e exibir na tela
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            exit()
+        if event.type == KEYDOWN:
+            if event.key in [cima, baixo, esquerda, direita]:
+                cobrinha_dir = event.key
+        
+        # Movimento da cobrinha
+        if snake_dir == cima:
+            nova_posicao = (snake[0][0]-passo, snake[0][1])
+        snake.insert(0, nova_posicao)
+
+
+    for pos in snake:
+        screen.blit(snake_skin, pos)
+
+    pygame.display.update()
