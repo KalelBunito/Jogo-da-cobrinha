@@ -18,7 +18,7 @@ baixo = K_DOWN
 passo = 10
 
 # criação das variáveis
-snake = [(200, 200), (200, 210)]
+snake = [(200, 200)]
 snake_skin = pygame.Surface((10,10))
 snake_skin.fill((255,255,255))
 snake_dir = cima
@@ -43,7 +43,14 @@ while True:
         
         # Movimento da cobrinha
         if snake_dir == cima:
+            nova_posicao = (snake[0][0], snake[0][1]-passo)
+        if snake_dir == baixo:
+            nova_posicao = (snake[0][0], snake[0][1]+passo)
+        if snake_dir ==  esquerda:
             nova_posicao = (snake[0][0]-passo, snake[0][1])
+            print("se vovimentando")
+        if snake_dir == direita:
+            nova_posicao = (snake[0][0]+passo, snake[0][1])
         snake.insert(0, nova_posicao)
 
 
