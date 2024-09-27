@@ -21,16 +21,23 @@ passo = 10
 snake = [(200, 200)]
 snake_skin = pygame.Surface((10,10))
 snake_skin.fill((255,255,255))
-snake_dir = cima
+snake_dir = baixo
+
+# Maçâ
+# maca_pos = (200, 300)
+# maca_sup = pygame.Surface((20))
+# maca_sup.fill((255,0,0))
+
+maca_img = pygame.image.load("maca.png")
+img_redimencionada = pygame.transform.scale(maca_img, (25,25))
 
 # atribuir a velocidade "frames"
 # direito (horizontal): 0 à 600px: esquerdo(negativos), direito(positivos);
 # (vertical): 0 à 600px: topo (negativos), inferior (positivos);
-clock = pygame.time.Clock()
 
 while True:
     screen.fill((0, 0, 0))
-    clock.tick(10)
+    pygame.time.Clock().tick(10)
 
     # verificar as posiçoes do corpo da cobra e exibir na tela
     for event in pygame.event.get():
@@ -39,7 +46,7 @@ while True:
             exit()
         if event.type == KEYDOWN:
             if event.key in [cima, baixo, esquerda, direita]:
-                cobrinha_dir = event.key
+                snake_dir = event.key
         
         # Movimento da cobrinha
         if snake_dir == cima:
@@ -48,13 +55,15 @@ while True:
             nova_posicao = (snake[0][0], snake[0][1]+passo)
         if snake_dir ==  esquerda:
             nova_posicao = (snake[0][0]-passo, snake[0][1])
-            print("se vovimentando")
         if snake_dir == direita:
             nova_posicao = (snake[0][0]+passo, snake[0][1])
         snake.insert(0, nova_posicao)
 
+        snake.pop()
 
     for pos in snake:
         screen.blit(snake_skin, pos)
+
+    screen.blit(img_redimencionada, (200,300))
 
     pygame.display.update()
