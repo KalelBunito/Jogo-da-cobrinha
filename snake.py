@@ -5,7 +5,8 @@ from pygame.locals import *
 pygame.init()
 
 # interface
-screen = pygame.display.set_mode((600,600))
+screen_width = (600,600)
+screen = pygame.display.set_mode(screen_width)
 pygame.display.set_caption('Jogo da Cobrinha')
 
 # direções da cobra
@@ -23,17 +24,16 @@ snake_skin = pygame.Surface((10,10))
 snake_skin.fill((255,255,255))
 snake_dir = baixo
 
-# Maçâ
-# maca_pos = (200, 300)
-# maca_sup = pygame.Surface((20))
-# maca_sup.fill((255,0,0))
+# funçao de colisao
+def gerar_posicao_maca():
+    while True:
+        nova_posicao = (random.randint(0, (screen[0]// 10)-1) * 10, random.randint(0, (screen[1]// 10)-1) * 10)
+        if nova_posicao not in snake:
+            return nova_posicao
 
 maca_img = pygame.image.load("maca.png")
 img_redimencionada = pygame.transform.scale(maca_img, (25,25))
-
-# atribuir a velocidade "frames"
-# direito (horizontal): 0 à 600px: esquerdo(negativos), direito(positivos);
-# (vertical): 0 à 600px: topo (negativos), inferior (positivos);
+maca_pos = gerar_posicao_maca()
 
 while True:
     screen.fill((0, 0, 0))
@@ -49,21 +49,20 @@ while True:
                 snake_dir = event.key
         
         # Movimento da cobrinha
-        if snake_dir == cima:
-            nova_posicao = (snake[0][0], snake[0][1]-passo)
-        if snake_dir == baixo:
-            nova_posicao = (snake[0][0], snake[0][1]+passo)
-        if snake_dir ==  esquerda:
-            nova_posicao = (snake[0][0]-passo, snake[0][1])
-        if snake_dir == direita:
-            nova_posicao = (snake[0][0]+passo, snake[0][1])
-        snake.insert(0, nova_posicao)
-
-        snake.pop()
+    if snake_dir == cima:
+        nova_posicao = (snake[0][0], snake[0][1]-passo)
+    if snake_dir == baixo:
+        nova_posicao = (snake[0][0], snake[0][1]+passo)
+    if snake_dir ==  esquerda:
+        nova_posicao = (snake[0][0]-passo, snake[0][1])
+    if snake_dir == direita:
+        nova_posicao = (snake[0][0]+passo, snake[0][1])
+    snake.insert(0, nova_posicao)
+    snake.pop()
 
     for pos in snake:
         screen.blit(snake_skin, pos)
 
-    screen.blit(img_redimencionada, (200,300))
+    screen.blit(img_redimencionada, maca_pos)
 
     pygame.display.update()
